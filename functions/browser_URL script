@@ -1,0 +1,21 @@
+systemutil.CloseProcessByName "firefox.exe"
+	wait 2
+	Systemutil.Run "C:\Program Files (x86)\Mozilla Firefox\firefox.exe","http://ezonepreprod.ezoneonline.in/"
+	wait 20
+	If Browser("EZone Site | Homepage").Dialog("Authentication Required").Page("Authentication Required").WebButton("OK").Exist Then
+		Browser("EZone Site | Homepage").Dialog("Authentication Required").Page("Authentication Required").WebButton("OK").Click	
+	End If
+	wait 5
+	'Browser("EZone Site | Homepage").Dialog("Authentication Required").Page("Authentication Required").WebButton("OK").Click
+	If Browser("EZone Site | Homepage").Dialog("Authentication Required").Page("Authentication Required").WebButton("OK").Exist Then
+		Browser("EZone Site | Homepage").Dialog("Authentication Required").Page("Authentication Required").WebButton("OK").Click	
+	End If
+	if Browser("EZone Site | Homepage").Page("EZone Site | Homepage").Exist then
+		Reporter.ReportEvent micPass,"Browser and homepage validation","Home page opened"
+		datatable.Value("ResultPF","dTest_Steps")="PASS"
+		datatable.Value("End_time","dTest_Steps")=now
+	else
+		Reporter.ReportEvent  micFail,"Browser and homepage validation","Home page not opened"
+		datatable.Value("ResultPF","dTest_Steps")="Fail"
+		datatable.Value("End_time","dTest_Steps")=now
+	End if
